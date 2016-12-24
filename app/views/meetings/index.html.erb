@@ -9,7 +9,7 @@
 <%= I18n.t('date.month_names')[start_date.month] %> <%= start_date.year %>
 <%= link_to 'Next', start_date: date_range.last + 1.day %>
 
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
       <% date_range.slice(0, 7).each do |day| %>
@@ -21,8 +21,13 @@
     <% date_range.each_slice(7) do |week| %>
       <tr>
         <% week.each do |day| %>
-          <td><%= day %></td>
-        <% end %>        
+          <td>
+          <%= day %>
+          <% @meetings.select {|m| m.start_time.to_date == day}.sort_by(&:start_time).each do |meeting| %>
+            <div><%= link_to meeting.name, meeting %></div>
+          <% end %>
+          </td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
